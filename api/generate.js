@@ -1,13 +1,9 @@
-// server.js
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+// api/generate.js
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-app.post("/generate", async (req, res) => {
   const { prompt, n } = req.body;
 
   try {
@@ -15,7 +11,7 @@ app.post("/generate", async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // Not API_KEY
       },
       body: JSON.stringify({
         prompt,
@@ -26,10 +22,8 @@ app.post("/generate", async (req, res) => {
     });
 
     const data = await response.json();
-    res.json(data);
+    res.status(200).json(data);
   } catch (err) {
     res.status(500).json({ error: "Image generation failed" });
   }
-});
-
-app.listen(8080, () => console.log("Server running on http://localhost:8080"));
+}

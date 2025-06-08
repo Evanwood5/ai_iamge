@@ -22,7 +22,7 @@ const updateImageCard = (imgDataArray) => {
 
 const generateAiImages = async (userPrompt, userImgQuantity) => {
   try {
-    const response = await fetch("http://localhost:8080/generate", {
+    const response = await fetch("/api/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
