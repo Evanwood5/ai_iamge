@@ -22,6 +22,12 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+
+    // ✅ Add logging here
+    console.log("Prompt:", prompt);
+    console.log("Images returned:", data?.data?.length);
+    console.log("Full response from OpenAI:", data);
+
     if (!data?.data) {
       return res.status(500).json({ error: "No images returned" });
     }
