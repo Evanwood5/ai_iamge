@@ -45,7 +45,9 @@ const generateAiImages = async (userPrompt, userImgQuantity) => {
     });
 
     const result = await response.json();
-    if (!response.ok || !result?.data) throw new Error(result.error || "No data returned");
+    if (!response.ok || !result?.data) {
+      throw new Error(result.error || "No images returned");
+    }
 
     updateImageCard(result.data);
   } catch (error) {
@@ -65,9 +67,9 @@ const handleFormSubmission = (e) => {
 
   const imgCardMarkup = Array.from({ length: userImgQuantity }, () => `
     <div class="img-card loading">
-      <img src="images/loading.svg" alt="loading">
+      <img src="/images/loading.svg" alt="loading">
       <a href="#" class="download-btn">
-        <img src="images/download.svg" alt="download icon">
+        <img src="/images/download.png" alt="download icon">
       </a>
     </div>
   `).join("");
