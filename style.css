@@ -1,0 +1,176 @@
+/* style.css */
+
+:root {
+  --clr-1: #000000;
+  --clr-2: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+.image-generator {
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("images/bg.jpg") no-repeat center center/cover;
+  position: relative;
+}
+
+.image-generator::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--clr-1);
+  opacity: 0.5;
+}
+
+.image-generator .content {
+  color: var(--clr-2);
+  padding: 0 15px;
+  max-width: 760px;
+  text-align: center;
+  position: relative;
+}
+
+.image-generator h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.image-generator p {
+  font-size: 1.35rem;
+  margin-top: 10px;
+}
+
+.generate-form {
+  height: 56px;
+  width: 100%;
+  display: flex;
+  padding: 6px;
+  margin: 30px 0;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 30px;
+}
+
+.generate-form .prompt-input {
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+  outline: none;
+  border: none;
+  background: none;
+  padding: 0 17px;
+}
+
+.generate-form .controls {
+  display: flex;
+  height: 100%;
+  gap: 15px;
+  align-items: center;
+}
+
+.generate-form .img-quantity,
+.generate-form .generate-btn {
+  font-size: 1rem;
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.generate-form .generate-btn {
+  padding: 0 25px;
+  background: #4949E7;
+  color: #fff;
+  border-radius: 30px;
+}
+
+.image-gallery {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  padding: 0 15px;
+  max-width: 1250px;
+  margin: 50px auto;
+  justify-content: center;
+}
+
+.image-gallery .img-card {
+  width: 285px;
+  aspect-ratio: 1 / 1;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.image-gallery .img-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-gallery .img-card.loading img {
+  width: 80px;
+  height: 80px;
+}
+
+.image-gallery .img-card .download-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: #fff;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-gallery .img-card:hover .download-btn {
+  display: flex;
+}
+
+.image-gallery .img-card .download-btn img {
+  width: 14px;
+  height: 14px;
+}
+
+@media screen and (max-width: 760px) {
+  .image-generator h1 {
+    font-size: 1.8rem;
+  }
+  .image-generator p {
+    font-size: 1rem;
+  }
+  .generate-form {
+    display: block;
+    height: auto;
+  }
+  .generate-form .controls {
+    margin-top: 15px;
+    justify-content: flex-end;
+  }
+  .image-gallery {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .image-gallery .img-card {
+    width: 100%;
+  }
+}
