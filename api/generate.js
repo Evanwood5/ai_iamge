@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // Not API_KEY
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         prompt,
@@ -22,6 +22,10 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+    if (!data?.data) {
+      return res.status(500).json({ error: "No images returned" });
+    }
+
     res.status(200).json(data);
   } catch (err) {
     res.status(500).json({ error: "Image generation failed" });

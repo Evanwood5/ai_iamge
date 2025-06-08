@@ -1,9 +1,18 @@
+// script.js
+
 const generateForm = document.querySelector(".generate-form");
 const imageGallery = document.querySelector(".image-gallery");
 
 let isImageGenerating = false;
 
 const updateImageCard = (imgDataArray) => {
+  console.log("API Response Data:", imgDataArray);
+
+  if (!Array.isArray(imgDataArray)) {
+    alert("No image data returned from the server.");
+    return;
+  }
+
   imgDataArray.forEach((imgObject, index) => {
     const imgCard = imageGallery.querySelectorAll(".img-card")[index];
     const imgElement = imgCard.querySelector("img");
@@ -35,9 +44,10 @@ const generateAiImages = async (userPrompt, userImgQuantity) => {
       })
     });
 
-    if (!response.ok) throw new Error("Failed to generate images! Please try again.");
-    const { data } = await response.json();
-    updateImageCard(data);
+    const result = await response.json();
+    if (!response.ok || !result?.data) throw new Error(result.error || "No data returned");
+
+    updateImageCard(result.data);
   } catch (error) {
     alert(error.message);
   } finally {
