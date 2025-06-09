@@ -6,13 +6,6 @@ const imageGallery = document.querySelector(".image-gallery");
 let isImageGenerating = false;
 
 const updateImageCard = (imgDataArray) => {
-  console.log("API Response Data:", imgDataArray);
-
-  if (!Array.isArray(imgDataArray)) {
-    alert("No image data returned from the server.");
-    return;
-  }
-
   imgDataArray.forEach((imgObject, index) => {
     const imgCard = imageGallery.querySelectorAll(".img-card")[index];
     const imgElement = imgCard.querySelector("img");
@@ -31,38 +24,28 @@ const updateImageCard = (imgDataArray) => {
 
 const generateAiImages = async (userPrompt, userImgQuantity) => {
   try {
-    const response = await fetch("https://api.openai.com/v1/images/generations", {
+    const response = await fetch("/api/generate", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         prompt: userPrompt,
         n: parseInt(userImgQuantity),
         size: "512x512",
-        response_format: "b64_json",
-        model: "dall-e-2"
+        response_format: "b64_json"
       })
     });
 
-    const text = await response.text(); // get raw response
-    console.log("Raw response text:", text);
-
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status} - ${text}`);
-    }
-
-    const { data } = JSON.parse(text);
+    if (!response.ok) throw new Error("Failed to generate images! Please try again.");
+    const { data } = await response.json();
     updateImageCard(data);
   } catch (error) {
-    console.error(error);
     alert(error.message);
   } finally {
     isImageGenerating = false;
   }
 };
-
 
 const handleFormSubmission = (e) => {
   e.preventDefault();
@@ -74,9 +57,9 @@ const handleFormSubmission = (e) => {
 
   const imgCardMarkup = Array.from({ length: userImgQuantity }, () => `
     <div class="img-card loading">
-      <img src="/images/loading1.svg" alt="loading">
+      <img src="images/loading.svg" alt="loading">
       <a href="#" class="download-btn">
-        <img src="/images/download.png" alt="download icon">
+        <img src="images/download.png" alt="download icon">
       </a>
     </div>
   `).join("");
