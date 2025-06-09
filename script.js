@@ -31,31 +31,38 @@ const updateImageCard = (imgDataArray) => {
 
 const generateAiImages = async (userPrompt, userImgQuantity) => {
   try {
-    const response = await fetch("/api/generate", {
+    const response = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENAI_API_KEY}`
       },
       body: JSON.stringify({
         prompt: userPrompt,
         n: parseInt(userImgQuantity),
         size: "512x512",
-        response_format: "b64_json"
+        response_format: "b64_json",
+        model: "dall-e-2"
       })
     });
 
-    const result = await response.json();
-    if (!response.ok || !result?.data) {
-      throw new Error(result.error || "No images returned");
+    const text = await response.text(); // get raw response
+    console.log("Raw response text:", text);
+
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status} - ${text}`);
     }
 
-    updateImageCard(result.data);
+    const { data } = JSON.parse(text);
+    updateImageCard(data);
   } catch (error) {
+    console.error(error);
     alert(error.message);
   } finally {
     isImageGenerating = false;
   }
 };
+
 
 const handleFormSubmission = (e) => {
   e.preventDefault();
@@ -67,7 +74,7 @@ const handleFormSubmission = (e) => {
 
   const imgCardMarkup = Array.from({ length: userImgQuantity }, () => `
     <div class="img-card loading">
-      <img src="/images/loading.svg" alt="loading">
+      <img src="/images/loading1.svg" alt="loading">
       <a href="#" class="download-btn">
         <img src="/images/download.png" alt="download icon">
       </a>
