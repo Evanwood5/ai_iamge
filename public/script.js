@@ -37,7 +37,16 @@ const generateAiImages = async (userPrompt, userImgQuantity) => {
       })
     });
 
-    if (!response.ok) throw new Error("Failed to generate images! Please try again.");
+    if (response.status === 429) {
+  const errorData = await response.json();
+  alert("You have used up your calls for the week. API calls aren't free! ");
+  return;
+}
+
+if (!response.ok) {
+  throw new Error("Failed to generate images! Please try again.");
+}
+
     const { data } = await response.json();
     updateImageCard(data);
   } catch (error) {
