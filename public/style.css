@@ -14,7 +14,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url("/images/ai.png") no-repeat center center/cover;
+  background: url("images/ai.png") no-repeat center center/cover;
   position: relative;
 }
 
